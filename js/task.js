@@ -26,6 +26,33 @@ function addItemsToGallery(newItems) {
 }
 
 addItemsToGallery(gallery);
+const imagesArray = gallery.map(image => image.original);
+
+function onArrowPress(e) {
+  let imageIndex;
+  let imageSrc = refs.lightBoxImageRef.src;
+
+  if (e.code === 'ArrowLeft') {
+    imageIndex = imagesArray.indexOf(imageSrc);
+
+    if (imagesArray.length > imageIndex - 1 && imageIndex !== 0) {
+      console.log('Нажата стрелка влево');
+      imageSrc = imagesArray[imageIndex - 1];
+    } else {
+      imageSrc = imagesArray[imagesArray.length - 1];
+    }
+  } else if (e.code === 'ArrowRight') {
+    imageIndex = imagesArray.indexOf(imageSrc);
+
+    if (imagesArray.length > imageIndex + 1) {
+      imageSrc = imagesArray[imageIndex + 1];
+    } else {
+      imageSrc = imagesArray[0];
+    }
+  }
+
+  refs.lightBoxImageRef.src = imageSrc;
+}
 
 function onPictureClick(e) {
   e.preventDefault();
@@ -38,12 +65,14 @@ function onPictureClick(e) {
 function onOpenModal() {
   refs.lightBoxRef.classList.add('is-open');
   window.addEventListener('keydown', onEscKeyPress);
+  window.addEventListener('keydown', onArrowPress);
 }
 
 function onCloseModal() {
   refs.lightBoxImageRef.src = '';
   refs.lightBoxRef.classList.remove('is-open');
   window.removeEventListener('keydown', onEscKeyPress);
+  window.removeEventListener('keydown', onArrowPress);
 }
 
 function onEscKeyPress(e) {
