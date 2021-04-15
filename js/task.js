@@ -10,7 +10,7 @@ const refs = {
   backdropRef: document.querySelector('.lightbox__overlay'),
 };
 
-refs.galleryRef.addEventListener('click', onPictureClick);
+refs.galleryRef.addEventListener('click', onImageClick);
 refs.buttonCloseRef.addEventListener('click', onCloseModal);
 refs.backdropRef.addEventListener('click', onCloseModal);
 
@@ -26,24 +26,20 @@ function addItemsToGallery(newItems) {
 }
 
 addItemsToGallery(gallery);
-const imagesArray = gallery.map(image => image.original);
 
 function onArrowPress(e) {
   let imageIndex;
   let imageSrc = refs.lightBoxImageRef.src;
+  const imagesArray = gallery.map(image => image.original);
+  imageIndex = imagesArray.indexOf(imageSrc);
 
   if (e.code === 'ArrowLeft') {
-    imageIndex = imagesArray.indexOf(imageSrc);
-
     if (imagesArray.length > imageIndex - 1 && imageIndex !== 0) {
-      console.log('Нажата стрелка влево');
       imageSrc = imagesArray[imageIndex - 1];
     } else {
       imageSrc = imagesArray[imagesArray.length - 1];
     }
   } else if (e.code === 'ArrowRight') {
-    imageIndex = imagesArray.indexOf(imageSrc);
-
     if (imagesArray.length > imageIndex + 1) {
       imageSrc = imagesArray[imageIndex + 1];
     } else {
@@ -54,7 +50,7 @@ function onArrowPress(e) {
   refs.lightBoxImageRef.src = imageSrc;
 }
 
-function onPictureClick(e) {
+function onImageClick(e) {
   e.preventDefault();
   if (e.target.classList.contains('gallery__image')) {
     refs.lightBoxImageRef.src = e.target.dataset.source;
